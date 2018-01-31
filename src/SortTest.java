@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class SortTest {
   public static void main (String[] args) {
@@ -20,7 +21,7 @@ public class SortTest {
     printArray(A);
 
     Arrays.sort(A);
-    PSort.parallelSort(B, 0, B.length);
+    PSort1.parallelSort(B, 0, B.length);
    
     boolean isSuccess = true;
     for (int i = 0; i < A.length; i++) {
