@@ -21,6 +21,7 @@ public class PSort extends RecursiveAction{
 		ForkJoinPool pool = new ForkJoinPool(processors);
 		pool.invoke(temp);
 	}
+
 	public static void Sort(int[] A, int begin, int end) {
 		
 	
@@ -35,6 +36,34 @@ public class PSort extends RecursiveAction{
 			//partition
 			//PSort foo = new PSort();
 			//PSort bar = new PSort();
+			int pivot = A[begin + ((end - begin)/2)];
+			int newBegin = begin;
+			int newEnd = end - 1;
+			int temp = 0;
+
+			while(newBegin <= newEnd){
+				while(A[newBegin] < pivot){
+					newBegin ++;
+				}
+
+				while(A[newEnd] > pivot){
+					newEnd --;
+				}
+
+				if(newBegin <= newEnd){
+					temp = A[newBegin];
+					A[newBegin] = A[newEnd];
+					A[newEnd] = temp;
+
+					newBegin++;
+					newEnd--;
+				}
+
+				int partition = newBegin;
+
+				PSort ps1 = new PSort(A, begin, partition);
+				PSort ps2 = new PSort(A, partition, end);
+			}
 		}
 	}
 }
