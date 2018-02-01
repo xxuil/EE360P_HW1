@@ -23,10 +23,9 @@ public class PSort1 extends RecursiveAction{
 		pool.shutdown();
 	}
 
-	public static void Sort(int[] A, int begin, int end) {
-		int length = A.length;
+	public static void insertSort(int[] A, int begin, int end) {
 		int i, key, j;
-		for (i = 1; i < length; i++) {
+		for (i = begin + 1; i < end; i++) {
 			key = A[i];
 			j = i - 1;
 
@@ -38,13 +37,15 @@ public class PSort1 extends RecursiveAction{
 		}
 	}
 
-
-	public static int partition(int[] A, int begin, int end) {
-		return 0;
+	private static void swap(int [] a, int left, int right){
+		int temp = a[left];
+		a[left] = a[right];
+		a[right] = temp;
 	}
+
 	protected void compute() {
 		if((end - begin) <= 16) {
-				Sort(A,begin,end);
+			insertSort(A,begin,end);
 		}else {
 			if(begin < end) {
 				//partition
@@ -65,9 +66,7 @@ public class PSort1 extends RecursiveAction{
 					}
 
 					if(newBegin <= newEnd){
-						temp = A[newBegin];
-						A[newBegin] = A[newEnd];
-						A[newEnd] = temp;
+						swap(A, newBegin,newEnd);
 
 						newBegin++;
 						newEnd--;
@@ -84,8 +83,7 @@ public class PSort1 extends RecursiveAction{
 				PSort1 ps1 = new PSort1(A, begin, partition);
 				PSort1 ps2 = new PSort1(A, partition, end);
 
-				ps1.fork();
-				ps2.compute();
+				invokeAll(ps1,ps2);
 			}
 		}
 	}
