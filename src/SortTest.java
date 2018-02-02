@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class SortTest {
+  private static final int size = 9999;
   public static void main (String[] args) {
     int[] A1 = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     verifyParallelSort(A1);
@@ -11,6 +12,17 @@ public class SortTest {
     
     int[] A3 = {13, 59, 24, 18, 33, 20, 11, 11, 13, 50, 10999, 97};
     verifyParallelSort(A3);
+
+    Random r = new Random();
+    int[] A4 = new int[size];
+
+    for(int i = 0; i < size; i++){
+        int n = (int)(Math.random() * size + 1);
+        A4[i] = n;
+    }
+
+    verifyParallelSort(A4);
+
   }
 
   static void verifyParallelSort(int[] A) {
