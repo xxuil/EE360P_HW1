@@ -18,46 +18,60 @@ public class PMerge{
       throw new IllegalArgumentException("Wrong numThreads\n");
 
     ExecutorService pool = Executors.newFixedThreadPool(numThreads);
-    List<Future<Integer>> threadList = new ArrayList<Future<Integer>>();
+    List<Future<Map<Integer,Integer>>> threadList = new ArrayList<>();
+
+    int acount = 0, bcount = 0;
+    int total = A.length + B.length;
+    if(total < numThreads){
+        numThreads = total;
+    }
 
     for(int i = 0; i < numThreads; i++){
+      if(acount < A.length){
+        Callable<Map<Integer,Integer>> callable = new PMergeTask(A[acount], B, acount);
+        Future<Map<Integer,Integer>> future = pool.submit(callable);
+        acount ++;
+        threadList.add(future);
+      }
 
-    }
-  }
+      else {
+        if(bcount < B.length){
+          Callable<Map<Integer,Integer>> callable = new PMergeTask(B[bcount], A, bcount);
+          Future<Map<Integer,Integer>> future = pool.submit(callable);
+          bcount ++;
+          threadList.add(future);
+        }
 
-  private class PMergeTask implements Callable<Integer>{
-    private int element;
-    private int[] a;
-    private int index;
 
-    public PMergeTask(int element, int[] a, int index){
-      this.element = element;
-      this.a = a;
-      this.index = index;
-    }
-    public int binarysearch(int[] a, int left, int right, int element) {
-    	if(right >= 1) {
-    		int mid = left + (right - 1) / 2;
-    		if(a[mid] == element) {
-    			return mid;
-    		}else if(a[mid] > element) {
-    			return binarysearch(a, left, mid-1, element);
-    		}else if(a[mid] < element) {
-    			return binarysearch(a, mid+1, right, element);
-    		}
-    	}
-    	return -1;
+      }
     }
 
-    @Override
-    public Integer call() throws Exception {
-    	int index2 = binarysearch(a, 0, a.length, element);
-    	if(index2 != -1) {
-    		index += index2;
-    	}else{
-    		return -1;      //error in case the array size is less than 1
-    	}
-    	return index;
+    Map<Integer,Integer> result = null;
+
+    for(int i = 0; i< numThreads; i++){
+      try {
+        result = threadList.get(i).get();
+
+        if (result == null){
+          break;
+        }
+
+        if(DEBUG){System.out.println(result.toString());}
+
+        Set<Integer> temp = result.keySet();
+        int tempIndex = -1;
+
+        for(int temp1:temp)
+          tempIndex = temp1;
+
+        C[tempIndex] = result.get(tempIndex);
+
+      } catch (InterruptedException | ExecutionException e) {
+        System.out.println("ERROR");
+        e.printStackTrace();
+      }
     }
+
+    pool.shutdown();
   }
 }
