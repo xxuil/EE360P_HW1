@@ -1,75 +1,89 @@
 //UT-EID=
 
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
-public class PSort extends RecursiveAction{
-	private static boolean DEBUG = true;
-	public int[] A;
-	public int begin;
-	public int end;
-	PSort(int[] A, int begin, int end){
-		this.A = A;
-		this.begin = begin;
-		this.end = end;
-	}
-	public static void parallelSort(int[] A, int begin, int end){
-		int processors = Runtime.getRuntime().availableProcessors();
-		if (DEBUG) System.out.println("Number of processors: " + processors);
-		PSort temp = new PSort(A, begin, end);
-		ForkJoinPool pool = new ForkJoinPool(processors);
-		pool.invoke(temp);
-	}
-	public static void Sort(int[] A, int begin, int end) {
-		int length = end - begin + 1;
-		for(int i = 1; i < length; i++) {
-			int first = A[i];
-			int j = i - 1;
-			while((A[j] > first) && (j >= 0)) {
-				A[j+1] = A[j];
-				j--;
-			}
-			A[j+1] = first;
-		}
-	}
-	public static int partition(int[] A, int begin, int end) {
-		return 0;
-	}
-	protected void compute() {
-		if(begin + 16 <= end) {
-			Sort(A, begin, end);
-		}else {
-			int pivot = A[begin + ((end - begin)/2)];
-			int newBegin = begin;
-			int newEnd = end - 1;
-			int temp = 0;
+public class PSort extends RecursiveAction {
+    private static boolean DEBUG = true;
+    public int[] A;
+    public int begin;
+    public int end;
 
-			while(newBegin <= newEnd){
-				while(A[newBegin] < pivot){
-					newBegin ++;
-				}
+    PSort(int[] A, int begin, int end) {
+        this.A = A;
+        this.begin = begin;
+        this.end = end;
+    }
 
-				while(A[newEnd] > pivot){
-					newEnd --;
-				}
+    public static void parallelSort(int[] A, int begin, int end) {
+        int processors = Runtime.getRuntime().availableProcessors();
+        if (DEBUG) System.out.println("Number of processors: " + processors);
+        PSort temp = new PSort(A, begin, end);
+        ForkJoinPool pool = new ForkJoinPool(processors);
+        pool.invoke(temp);
+        pool.shutdown();
+    }
 
-				if(newBegin <= newEnd){
-					temp = A[newBegin];
-					A[newBegin] = A[newEnd];
-					A[newEnd] = temp;
+    public static void insertSort(int[] A, int begin, int end) {
+        int i, key, j;
+        for (i = begin + 1; i < end; i++) {
+            key = A[i];
+            j = i - 1;
 
-					newBegin++;
-					newEnd--;
-				}
-			}
-			int partition = newBegin;
+            while (j >= 0 && A[j] > key) {
+                A[j + 1] = A[j];
+                j = j - 1;
+            }
+            A[j + 1] = key;
+        }
+    }
 
-			PSort ps1 = new PSort(A, begin, partition);
-			ps1.fork();
-			PSort ps2 = new PSort(A, partition, end);
-			ps2.fork();
-			ps1.join();
-		}
-	}
+    private static void swap(int[] a, int left, int right) {
+        int temp = a[left];
+        a[left] = a[right];
+        a[right] = temp;
+    }
+
+    protected void compute() {
+        if ((end - begin) <= 16) {
+            insertSort(A, begin, end);
+        } else {
+            if (begin < end) {
+                int pivot = A[begin + ((end - begin) / 2)];
+                int newBegin = begin;
+                int newEnd = end - 1;
+                int temp = 0;
+
+                while (newBegin <= newEnd) {
+                    while (A[newBegin] < pivot) {
+                        newBegin++;
+                    }
+
+                    while (A[newEnd] > pivot) {
+                        newEnd--;
+                    }
+
+                    if (newBegin <= newEnd) {
+                        swap(A, newBegin, newEnd);
+
+                        newBegin++;
+                        newEnd--;
+                    }
+                }
+
+                int partition = newBegin;
+
+                if (false) {
+                    System.out.println(partition);
+                    SortTest.printArray(A);
+                }
+
+                PSort ps1 = new PSort(A, begin, partition);
+                PSort ps2 = new PSort(A, partition, end);
+
+                invokeAll(ps1, ps2);
+            }
+        }
+    }
 }

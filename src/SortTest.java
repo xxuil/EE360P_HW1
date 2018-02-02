@@ -33,7 +33,7 @@ public class SortTest {
     printArray(A);
 
     Arrays.sort(A);
-    PSort1.parallelSort(B, 0, B.length);
+    PSort.parallelSort(B, 0, B.length);
    
     boolean isSuccess = true;
     for (int i = 0; i < A.length; i++) {
