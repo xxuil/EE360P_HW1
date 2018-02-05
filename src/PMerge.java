@@ -64,6 +64,6 @@ public class PMerge{
 			  e.printStackTrace();
 		  }
 	  }
-	  pool.shutdown();
+	  pool.shutdown(); //
   }
 }
