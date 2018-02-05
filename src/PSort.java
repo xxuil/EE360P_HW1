@@ -1,4 +1,12 @@
-//UT-EID=
+/*
+ * EE 360P Homework 1
+ * Professor Grag
+ * Name: Xiangxing Liu
+ * EID:  xl5587
+ * Name: Kravis Cho
+ * EID:  kyc375
+ * Date: 02/05/2018
+ */
 
 
 import java.util.concurrent.ForkJoinPool;

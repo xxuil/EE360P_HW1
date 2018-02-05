@@ -1,3 +1,14 @@
+/*
+ * EE 360P Homework 1
+ * Professor Grag
+ * Name: Xiangxing Liu
+ * EID:  xl5587
+ * Name: Kravis Cho
+ * EID:  kyc375
+ * Date: 02/05/2018
+ */
+
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -49,8 +60,5 @@ public class PMergeTask implements Callable<Map<Integer,Integer>> {
         Map<Integer,Integer> temp = new HashMap<>();
         temp.put(index, element);
         return temp;
-    }
-
-    public static void main(String[] args){
     }
 }
