@@ -49,12 +49,11 @@ public class PMerge{
           bcount ++;
           threadList.add(future);
         }
-
-
       }
     }
 
     Map<Integer,Integer> result = null;
+    ArrayList<Integer> dupCheck = new ArrayList<>();
 
     for(int i = 0; i< numThreads; i++){
       try {
@@ -79,6 +78,8 @@ public class PMerge{
         e.printStackTrace();
       }
     }
+
+    PMergeTask.clearSet();
 
     pool.shutdown();
   }
