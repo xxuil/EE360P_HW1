@@ -16,7 +16,7 @@ public class PMergeTask implements Callable<Map<Integer,Integer>> {
     private int element;
     private int[] a;
     private int index;
-    private static List<Integer> dupCount = Collections.synchronizedList(new ArrayList<>());
+    private static Set<Integer> dupCount = Collections.synchronizedSet(new HashSet<>());
 
     public PMergeTask(int element, int[] a, int index){
         this.element = element;
@@ -35,17 +35,14 @@ public class PMergeTask implements Callable<Map<Integer,Integer>> {
             }
 
             else if (a[i] == element) {
-                synchronized (this){
-                    if(dupCount.contains(element)){
-                        return i + 1;
-                    }
-
-                    else {
-                        dupCount.add(element);
-                        return i;
-                    }
+                if(dupCount.contains(element)){
+                    return i + 1;
                 }
 
+                else {
+                    dupCount.add(element);
+                    return i;
+                }
             }
 
             else if ((a[i] < element) && (i == a.length - 1)) {
@@ -58,6 +55,10 @@ public class PMergeTask implements Callable<Map<Integer,Integer>> {
     @Override
     public Map<Integer,Integer> call() throws Exception {
         int index2 = search(a, element);
+
+        if(a.length == 0){
+            index2 = 0;
+        }
 
         if(index2 != -1) {
             index += index2;
