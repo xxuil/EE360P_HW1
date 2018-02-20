@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 
 
 public class PMerge{
-  private final static boolean DEBUG = true;
+  private final static boolean DEBUG = false;
   public static void parallelMerge(int[] A, int[] B, int[]C, int numThreads){
     // TODO: Implement your parallel merge function
 
@@ -53,7 +53,6 @@ public class PMerge{
     }
 
     Map<Integer,Integer> result = null;
-    ArrayList<Integer> dupCheck = new ArrayList<>();
 
     for(int i = 0; i< numThreads; i++){
       try {

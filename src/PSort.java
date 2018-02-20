@@ -13,7 +13,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 public class PSort extends RecursiveAction {
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
     public int[] A;
     public int begin;
     public int end;
