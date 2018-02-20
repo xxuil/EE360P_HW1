@@ -38,7 +38,6 @@ public class PSort extends RecursiveAction {
         for (i = begin + 1; i < end; i++) {
             key = A[i];
             j = i - 1;
-
             while (j >= 0 && A[j] > key) {
                 A[j + 1] = A[j];
                 j = j - 1;
@@ -62,34 +61,26 @@ public class PSort extends RecursiveAction {
                 int newBegin = begin;
                 int newEnd = end - 1;
                 int temp = 0;
-
                 while (newBegin <= newEnd) {
                     while (A[newBegin] < pivot) {
                         newBegin++;
                     }
-
                     while (A[newEnd] > pivot) {
                         newEnd--;
                     }
-
                     if (newBegin <= newEnd) {
                         swap(A, newBegin, newEnd);
-
                         newBegin++;
                         newEnd--;
                     }
                 }
-
                 int partition = newBegin;
-
                 if (false) {
                     System.out.println(partition);
                     SortTest.printArray(A);
                 }
-
                 PSort ps1 = new PSort(A, begin, partition);
                 PSort ps2 = new PSort(A, partition, end);
-
                 invokeAll(ps1, ps2);
             }
         }
