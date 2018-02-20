@@ -1,10 +1,10 @@
 import java.util.*;
 
 public class SimpleTestPmerge {
-    private static final int size = 10000;
+    private static final int size = 1000000;
   public static void main (String[] args) {
     int[] A1 = {1, 2, 3};
-    int[] B1 = {1, 2, 3};
+    int[] B1 = {};
     verifyParallelMerge(A1, B1);
     
     int[] A2 = {13, 60, 1000, 3000, 129948};
@@ -13,7 +13,19 @@ public class SimpleTestPmerge {
 
     int[] A3 = {1, 2, 3, 1111, 3333, 4444, 5555, 6666};
     int[] B3 = {1, 2, 3, 1111, 3334, 4445, 5556, 6667, 7778, 8888, 9999};
-    verifyParallelMerge(A3, B3);
+    verifyParallelMerge(A3, B3);/*
+      Random r = new Random();
+      int[] A4 = new int[size];
+
+      for(int i = 0; i < size; i++){
+          int n = (int)(Math.random() * 1000 + 1);
+          A4[i] = n;
+      }
+      Arrays.sort(A4);
+      int[] B4 = Arrays.copyOf(A4, A4.length);
+      verifyParallelMerge(A4, B4);
+      */
+
     Random r = new Random();
     int[] A4 = new int[size];
     for(int i = 0; i < size; i++){
@@ -23,7 +35,7 @@ public class SimpleTestPmerge {
     int end = A4.length;
     Set<Integer> set = new LinkedHashSet<>();
     for(int i = 0; i < end; i++){
-        set.add(A4[i]);
+      set.add(A4[i]);
     }
     Iterator<Integer> it = set.iterator();
     int i = 0;

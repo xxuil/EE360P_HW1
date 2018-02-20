@@ -18,9 +18,8 @@ public class PMerge{
   public static void parallelMerge(int[] A, int[] B, int[]C, int numThreads){
     // TODO: Implement your parallel merge function
 
-    if((A.length == 0) || (B.length == 0) || (C.length == 0)) {
-      throw new IllegalArgumentException("Can't be empty\n");
-    }
+    if((A.length + B.length) != C.length)
+        throw new IllegalArgumentException("Wrong input arrays\n");
 
     if(numThreads <= 0)
       throw new IllegalArgumentException("Wrong numThreads\n");
